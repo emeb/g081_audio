@@ -6,9 +6,7 @@ There are two build directories:
 
 * audio - a skeleton for building applications that can process stereo audio.
 
-* mv_comp - the Midiverb code using precompiled / optimized integer operations
-  
-  derived from the ROMs. The compiled code for baseline MIDIVerb algorithms is in the mv_progs.c file and was auto-generated with the compiler tools found in the [MIDIVerb_RE](https://github.com/emeb/MIDIVerb_RE) repository elsewhere in this collection.
+* mv_comp - the Midiverb code using precompiled / optimized integer operations derived from the ROMs. The compiled code for baseline MIDIVerb algorithms is in the mv_progs.c file and was auto-generated with the compiler tools found in the [MIDIVerb_RE](https://github.com/emeb/MIDIVerb_RE) repository elsewhere in this collection.
 
 ## Prerequisites
 
