@@ -4535,6 +4535,26 @@
 		)
 		(uuid "feae6e95-aaf1-40fe-9940-aaf6e6f58b99")
 	)
+	(text "Optional - not needed for MIDIVerb firmware."
+		(exclude_from_sim no)
+		(at 331.216 142.748 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "598fc87a-7004-4f2a-a76e-3d91cf3b25e5")
+	)
+	(text "Bridge 3-2 for I2S output."
+		(exclude_from_sim no)
+		(at 368.808 206.502 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+		)
+		(uuid "bcb10434-b368-4d4a-a705-600af7907881")
+	)
 	(label "SWCLK"
 		(at 267.97 91.44 0)
 		(effects
