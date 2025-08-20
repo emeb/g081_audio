@@ -12,7 +12,7 @@
 extern void (*mv_progs[63])(int16_t, int16_t *, int16_t *);
 
 /* buffer memory */
-int16_t mem[16384];
+extern int16_t mem[16384];
 
 #endif
 
