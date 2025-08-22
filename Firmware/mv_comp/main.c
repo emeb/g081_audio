@@ -15,6 +15,14 @@
 #include "widget.h"
 #include "mv_names.h"
 
+/*
+ * Optional OLED blanking - uncomment the following line if you want to
+ * enable the OLED screensaver to darken the display after several seconds
+ * The timeout is user selectable in milliseconds
+ */
+//#define OLED_BLANK_ENABLE
+#define OLED_BLANK_TIMEOUT 3000
+
 /**
   * @brief  This function is executed in case of error occurrence.
   * @retval None
@@ -131,6 +139,10 @@ int main(void)
 {
 	uint16_t prog = 255, dcnt = 0;
 	uint32_t slowgoal;
+#ifdef OLED_BLANK_ENABLE
+	uint32_t blankgoal;
+	uint8_t blanked;
+#endif
 	
 	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
 	HAL_Init();
@@ -175,6 +187,10 @@ int main(void)
 	
     /* Infinite loop */
 	slowgoal = timersleep_goal_ms(100);
+#ifdef OLED_BLANK_ENABLE
+	blankgoal= timersleep_goal_ms(OLED_BLANK_TIMEOUT);
+	blanked = 0;
+#endif
     while(1)
     {
 		/* quantize prog cv to number of progs & update */
@@ -185,7 +201,11 @@ int main(void)
 			oled_draw_7seg_2dRJ(0, 1, 1, prog+1, 1);
 			oled_drawstr(0, 0, 25, (char *)mv_prog_names[prog], 0);
 			dcnt = 20;
-			oled_refresh(0);	
+			oled_refresh(0);
+#ifdef OLED_BLANK_ENABLE
+			blankgoal= timersleep_goal_ms(OLED_BLANK_TIMEOUT);
+			blanked = 0;
+#endif
 		}
 		
 		/* stuff that happens at a slower rate */
@@ -226,13 +246,29 @@ int main(void)
 				oled_drawchar(0, 0, 25, 'D', 1);
 				oled_drawchar(0, 57, 25, 'W', 1);
 				bargraphH(0, 8, 26, 48, 6, (100*cvbuf[1])>>12);
+#ifdef OLED_BLANK_ENABLE
+				if(!blanked)
+					oled_refresh(0);
+#else
 				oled_refresh(0);
+#endif
 			}
 			else
 			{
 				dcnt--;
 			}
 		}
+		
+#ifdef OLED_BLANK_ENABLE
+		/* check for blanking */
+		if(!blanked && !timersleep_check(blankgoal))
+		{
+			/* clear the screen */
+			blanked = 1;
+			oled_clear(0,0);
+			oled_refresh(0);
+		}
+#endif
     }
 }
 
