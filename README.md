@@ -10,7 +10,7 @@ The G081 Audio module is an extremely simplified audio effects processor for Eur
 
 ## Background
 
-In 2021 I was involved in a project to reverse-engineer the MIDIVerb which I've documented over here: [MIDIVerb_RE](https://github.com/emeb/MIDIVerb_RE). Once that effort was wrapped up I had some curiosity about how well those algorithms could be implemented on modern low-cost microprocessors so I did some tests that showed the initial emulation approach was to costly to run well on low-spec processors because there was considerable overhead in the the interpretation approach that was used. The alternative was to "compile" the algorithms into equivalent C code which could then be further optimized into fast machine code by high quality C compilers available today. This is the method used in the G081 Audio module.
+In 2021 I was involved in a project to reverse-engineer the MIDIVerb which I've documented over here: [MIDIVerb_RE](https://github.com/emeb/MIDIVerb_RE). Once that effort was wrapped up I had some curiosity about how well those algorithms could be implemented on modern low-cost microprocessors so I did some tests that showed the initial emulation approach was too costly to run well on low-spec processors because there was considerable overhead in the the interpretation approach that was used. The alternative was to "compile" the algorithms into equivalent C code which could then be further optimized into fast machine code by high quality C compilers available today. This is the method used in the G081 Audio module.
 
 ## Hardware Features
 
@@ -49,8 +49,7 @@ The primary MIDIVerb software provides these features:
   - Mix setting displayed on OLED.
 - Input / Ouput level indicators
   - Low / normal / Clip level displayed as grayscale
-
-
+- Compile-time option for OLED blanking.
 
 ## Design Collateral
 
@@ -59,3 +58,11 @@ This repository contains both Hardware and Firmware design info. Please refer to
 [Hardware](./Hardware/README.md)
 
 [Firmware](./Firmware/README.md)
+
+## Build Notes
+
+Since this project was first released there has been at least one alternate layout built by others in the community which unfortunately suffered from severe noise caused by the OLED which leaked into the audio path. The original layout provided here does not suffer from that problem so it's worthwhile noting that if you do choose to respin this design it would be wise to observe good layout principles:
+- Maintain as contiguous a ground plane as is possible
+- Think about the paths that supply and return currents are forced to take through your layout and how to keep the digital and analog paths separate.
+
+In particular, the OLED is prone to generating strong current spikes when it is refreshing any active pixels and the PT8211 I2S DAC has very poor power supply rejection so when those two devices are present in the same design you must use care to keep them from fighting. I've provided a compile-time option to blank the OLED after a few seconds which can work around this issue but with good layout this should not be necessary.
